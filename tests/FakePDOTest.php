@@ -3,8 +3,9 @@
 namespace Illuminate\CodeIgniter;
 
 use Mockery as m;
+use PHPUnit\Framework\TestCase;
 
-class FakePDOTest extends \PHPUnit_Framework_TestCase
+class FakePDOTest extends TestCase
 {
     public function testConstants()
     {

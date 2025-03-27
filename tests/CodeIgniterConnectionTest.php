@@ -3,10 +3,15 @@
 namespace Illuminate\CodeIgniter;
 
 use Mockery as m;
+use PHPUnit\Framework\TestCase;
+use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
-class CodeIgniterConnectionTest extends \PHPUnit_Framework_TestCase
+class CodeIgniterConnectionTest extends TestCase
 {
-    public function setUp()
+    protected $ci;
+    protected $connection;
+
+    protected function setUp(): void
     {
         $this->ci = m::mock('ci');
         $this->ci->db = m::mock('ci_db');
