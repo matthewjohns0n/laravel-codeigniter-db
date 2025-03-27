@@ -2,6 +2,7 @@
     "name": "expressodev/laravel-codeigniter-db",
     "type": "library",
     "description": "Integration layer allowing use of the Laravel database library in CodeIgniter applications",
+    "version": "2.0.0",
     "keywords": [
         "ci",
         "codeigniter",

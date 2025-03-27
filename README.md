@@ -21,6 +21,12 @@ This means that you will not need to establish two separate connections to the d
 and it also means that CodeIgniter database profiling functions will continue to
 work correctly.
 
+## Supported Platforms
+
+- CodeIgniter 3.x
+- CodeIgniter 4.x
+- ExpressionEngine 6.x
+- ExpressionEngine 7.x
 
 ## Usage
 
@@ -29,7 +35,7 @@ In your `composer.json` file:
 ```json
 {
     "require": {
-        "expressodev/laravel-codeigniter-db": "~1.0"
+        "expressodev/laravel-codeigniter-db": "^2.0"
     }
 }
 ```
@@ -47,6 +53,27 @@ $ci = get_instance();
 $resolver = new Illuminate\CodeIgniter\CodeIgniterConnectionResolver($ci);
 Illuminate\Database\Eloquent\Model::setConnectionResolver($resolver);
 ```
+
+## Requirements
+
+- PHP 8.1 or higher
+- Laravel 9.x/10.x/11.x
+- CodeIgniter (any version that supports PHP 8.1+)
+- ExpressionEngine 7.x (requires PHP 8.1+)
+
+## Database Support
+
+The package supports the following database drivers:
+- MySQL/MySQLi
+- PostgreSQL
+- SQLite
+
+## ExpressionEngine 7 Notes
+
+When using this package with ExpressionEngine 7:
+1. The package will automatically use PDO if available through EE7's database layer
+2. All database operations will be properly profiled in EE7's debug toolbar
+3. The package maintains compatibility with EE7's database prefix handling
 
 ## License
 

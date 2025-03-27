@@ -39,8 +39,12 @@ class CodeIgniterConnection extends Connection
                 if (class_exists('\Illuminate\Database\Query\Grammars\MySqlGrammar')) {
                     return $this->withTablePrefix(new \Illuminate\Database\Query\Grammars\MySqlGrammar);
                 }
-
                 return $this->withTablePrefix(new \Illuminate\Database\Schema\Grammars\MySqlGrammar);
+            case 'postgresql':
+            case 'pgsql':
+                return $this->withTablePrefix(new \Illuminate\Database\Query\Grammars\PostgresGrammar);
+            case 'sqlite':
+                return $this->withTablePrefix(new \Illuminate\Database\Query\Grammars\SQLiteGrammar);
         }
 
         throw new \InvalidArgumentException("Unknown CI database driver '$driver'");
@@ -58,6 +62,11 @@ class CodeIgniterConnection extends Connection
             case 'mysql':
             case 'mysqli':
                 return $this->withTablePrefix(new \Illuminate\Database\Schema\Grammars\MySqlGrammar);
+            case 'postgresql':
+            case 'pgsql':
+                return $this->withTablePrefix(new \Illuminate\Database\Schema\Grammars\PostgresGrammar);
+            case 'sqlite':
+                return $this->withTablePrefix(new \Illuminate\Database\Schema\Grammars\SQLiteGrammar);
         }
 
         throw new \InvalidArgumentException("Unsupported CodeIgniter database driver '$driver'");
@@ -80,6 +89,10 @@ class CodeIgniterConnection extends Connection
      */
     public function getPdo()
     {
+        if (method_exists($this->ci->db, 'getPdo')) {
+            return $this->ci->db->getPdo();
+        }
+
         throw new \BadMethodCallException('PDO is not supported by CodeIgniter database driver');
     }
 
