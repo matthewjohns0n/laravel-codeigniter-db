@@ -3,6 +3,8 @@
 namespace Illuminate\CodeIgniter;
 
 use Illuminate\Database\ConnectionResolverInterface;
+use Illuminate\Database\Connection;
+use RuntimeException;
 
 class CodeIgniterConnectionResolver implements ConnectionResolverInterface
 {
@@ -14,6 +16,12 @@ class CodeIgniterConnectionResolver implements ConnectionResolverInterface
         $this->ci = $ci;
     }
 
+    /**
+     * Get a database connection instance.
+     *
+     * @param  string|null  $name
+     * @return \Illuminate\Database\Connection
+     */
     public function connection($name = null)
     {
         if (null !== $name) {
@@ -27,13 +35,24 @@ class CodeIgniterConnectionResolver implements ConnectionResolverInterface
         return $this->connection;
     }
 
+    /**
+     * Get the default connection name.
+     *
+     * @return string
+     */
     public function getDefaultConnection()
     {
-        throw new \NotImplementedException;
+        return 'codeigniter';
     }
 
+    /**
+     * Set the default connection name.
+     *
+     * @param  string  $name
+     * @return void
+     */
     public function setDefaultConnection($name)
     {
-        throw new \NotImplementedException;
+        throw new RuntimeException("Setting default connection is not supported.");
     }
 }

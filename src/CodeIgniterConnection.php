@@ -4,6 +4,8 @@ namespace Illuminate\CodeIgniter;
 
 use PDO;
 use Illuminate\Database\Connection;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Schema\Builder as SchemaBuilder;
 
 class CodeIgniterConnection extends Connection
 {
@@ -86,7 +88,7 @@ class CodeIgniterConnection extends Connection
      *
      * @return void
      */
-    protected function reconnectIfMissingConnection()
+    public function reconnectIfMissingConnection()
     {
         //Reconnection is not supported by CodeIgniter database driver, do nothing
     }
@@ -100,12 +102,12 @@ class CodeIgniterConnection extends Connection
      *
      * @return array
      */
-    public function select($query, $bindings = array(), $useReadPdo = true)
+    public function select($query, $bindings = [], $useReadPdo = true)
     {
         $self = $this;
 
         return $this->run($query, $bindings, function($query, $bindings) use ($self) {
-            if ($self->pretending()) return array();
+            if ($self->pretending()) return [];
 
             // pass query to CodeIgniter database layer
             $bindings = $self->prepareBindings($bindings);
@@ -140,7 +142,7 @@ class CodeIgniterConnection extends Connection
      * @param  array  $bindings
      * @return bool
      */
-    public function statement($query, $bindings = array())
+    public function statement($query, $bindings = [])
     {
         $self = $this;
 
@@ -161,7 +163,7 @@ class CodeIgniterConnection extends Connection
      * @param  array  $bindings
      * @return int
      */
-    public function affectingStatement($query, $bindings = array())
+    public function affectingStatement($query, $bindings = [])
     {
         $self = $this;
 
@@ -183,5 +185,48 @@ class CodeIgniterConnection extends Connection
     public function lastInsertId()
     {
         return $this->ci->db->insert_id();
+    }
+
+    /**
+     * Get the last insert id from CodeIgniter
+     */
+    public function insert_id()
+    {
+        return $this->ci->db->insert_id();
+    }
+
+    /**
+     * Get a schema builder instance for the connection.
+     *
+     * @return \Illuminate\Database\Schema\Builder
+     */
+    public function getSchemaBuilder()
+    {
+        if (is_null($this->schemaGrammar)) {
+            $this->useDefaultSchemaGrammar();
+        }
+
+        return new SchemaBuilder($this);
+    }
+
+    /**
+     * Get the database connection name.
+     *
+     * @return string|null
+     */
+    public function getName()
+    {
+        return 'codeigniter';
+    }
+
+    /**
+     * Get an option from the configuration options.
+     *
+     * @param  string|null  $option
+     * @return mixed
+     */
+    public function getConfig($option = null)
+    {
+        return $option ? null : [];
     }
 }
